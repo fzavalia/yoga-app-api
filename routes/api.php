@@ -22,10 +22,10 @@ makeBREAD("students", "StudentController");
 function makeBREAD($prefix, $controller)
 {
     Route::prefix($prefix)->group(function () use ($controller) {
-        Route::post("/", "{$controller}@store");
-        Route::get("/", "{$controller}@list");
-        Route::put("{id}", "{$controller}@update");
-        Route::get("{id}", "${controller}@show");
+        Route::post  ("",     "{$controller}@store");
+        Route::get   ("",     "{$controller}@list");
+        Route::put   ("{id}", "{$controller}@update");
+        Route::get   ("{id}", "${controller}@show");
         Route::delete("{id}", "${controller}@delete");
     });
 }
