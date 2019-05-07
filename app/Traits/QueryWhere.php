@@ -8,7 +8,7 @@ trait QueryWhere
 {
     protected function where(Request $request, $query, $columns)
     {
-        $columns = collect(['name', 'email', 'phone_number', 'dni']);
+        $columns = collect($columns);
 
         foreach ($request->query() as $key => $value) {
             if ($columns->contains($key)) {
