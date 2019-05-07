@@ -9,17 +9,27 @@ class StudentController extends Controller
 {
     public function show($id)
     {
-        $student = Student::with('payments')->findOrFail($id);
+        $student = Student::findOrFail($id);
 
         return $student;
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $students = Student::all();
+        $query = Student::query();
+
+        $filterables = collect(['name', 'email', 'phone_number', 'dni']);
+
+        foreach ($request->query() as $key => $value) {
+            if ($filterables->contains($key)) {
+                $query->where($key, 'like', "%$value%");
+            }
+        }
+
+        $students = $query->get();
 
         return $students;
-     }
+    }
 
     public function store(Request $request)
     {
