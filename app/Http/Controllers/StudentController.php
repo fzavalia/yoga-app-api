@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Student;
+use App\Traits\QueryWhere;
+use App\Traits\QueryOrder;
 
 class StudentController extends Controller
 {
+    use QueryWhere, QueryOrder;
+
     public function show($id)
     {
         $student = Student::findOrFail($id);
@@ -18,22 +22,9 @@ class StudentController extends Controller
     {
         $query = Student::query();
 
-        $filterables = collect(['name', 'email', 'phone_number', 'dni']);
+        $this->where($request, $query, ['name', 'email', 'phone_number', 'dni']);
 
-        foreach ($request->query() as $key => $value) {
-            if ($filterables->contains($key)) {
-                $query->where($key, 'like', "%$value%");
-            }
-        }
-
-        $orderBy = $request->query('order_by');
-
-        if ($orderBy) {
-
-            $orderType = $request->query('order_type') ?? 'desc';
-
-            $query->orderBy($request->query('order_by'), $orderType);
-        }
+        $this->order($request, $query);
 
         $students = $query->get();
 
