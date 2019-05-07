@@ -9,11 +9,17 @@ class StudentController extends Controller
 {
     public function show($id)
     {
-
         $student = Student::findOrFail($id);
 
         return $student;
     }
+
+    public function list()
+    {
+        $students = Student::all();
+
+        return $students;
+     }
 
     public function store(Request $request)
     {
