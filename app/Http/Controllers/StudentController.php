@@ -7,7 +7,8 @@ use App\Student;
 
 class StudentController extends Controller
 {
-    public function show($id) {
+    public function show($id)
+    {
 
         $student = Student::findOrFail($id);
 
@@ -15,7 +16,7 @@ class StudentController extends Controller
     }
 
     public function store(Request $request)
-    { 
+    {
         $validatedData = $request->validate([
             'name' => 'required|string',
             'email' => 'email',
@@ -29,7 +30,7 @@ class StudentController extends Controller
     }
 
     public function update(Request $request, $id)
-    { 
+    {
         $validatedData = $request->validate([
             'name' => 'string',
             'email' => 'email',
@@ -40,6 +41,15 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
 
         $student->update($validatedData);
+
+        return $student;
+    }
+
+    public function delete($id)
+    {
+        $student = Student::findOrFail($id);
+
+        $student->delete();
 
         return $student;
     }
