@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->foreign('student_id')->references('id')->on('students');
             $table->unsignedBigInteger('amount');
             $table->enum('type', ['cash', 'credit_card']);
+            $table->date('payed_at');
         });
     }
 
