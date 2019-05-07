@@ -26,6 +26,15 @@ class StudentController extends Controller
             }
         }
 
+        $orderBy = $request->query('order_by');
+
+        if ($orderBy) {
+
+            $orderType = $request->query('order_type') ?? 'desc';
+
+            $query->orderBy($request->query('order_by'), $orderType);
+        }
+
         $students = $query->get();
 
         return $students;
