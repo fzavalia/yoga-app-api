@@ -12,4 +12,8 @@ class Student extends Model
         'phone_number',
         'dni'
     ];
+
+    public function payments() {
+        $this->belongsToMany('App\Payment');
+    }
 }
