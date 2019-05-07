@@ -13,11 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware("auth:api")->get("/user", function (Request $request) {
     return $request->user();
 });
 
-Route::post('/students', 'StudentController@store');
-Route::put('/students/{id}', 'StudentController@update');
-Route::get('/students/{id}', 'StudentController@show');
-Route::delete('/students/{id}', 'StudentController@delete');
+makeBREAD("students", "StudentController");
+
+function makeBREAD($prefix, $controller)
+{
+    Route::prefix($prefix)->group(function () use ($controller) {
+        Route::post("/", "{$controller}@store");
+        Route::get("/", "{$controller}@list");
+        Route::put("{id}", "{$controller}@update");
+        Route::get("{id}", "${controller}@show");
+        Route::delete("{id}", "${controller}@delete");
+    });
+}
