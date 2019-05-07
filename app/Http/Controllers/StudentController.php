@@ -9,7 +9,7 @@ class StudentController extends Controller
 {
     public function show($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::with('payments')->findOrFail($id);
 
         return $student;
     }

@@ -13,7 +13,8 @@ class Student extends Model
         'dni'
     ];
 
-    public function payments() {
-        $this->belongsToMany('App\Payment');
+    public function payments()
+    {
+        return $this->hasMany('App\Payment');
     }
 }

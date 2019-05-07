@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
     public function show($id)
     {
-        $payment = Payment::findOrFail($id);
+        $payment = Payment::with('student')->findOrFail($id);
 
         return $payment;
     }

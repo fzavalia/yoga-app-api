@@ -13,7 +13,8 @@ class Payment extends Model
         'payed_at'
     ];
 
-    public function student() {
+    public function student()
+    {
         return $this->belongsTo('App\Student');
     }
 }
