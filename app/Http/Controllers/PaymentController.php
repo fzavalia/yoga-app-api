@@ -24,10 +24,10 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'type' => 'required|string',
+            'type' => 'required|in:cash,credit_card',
             'amount' => 'required|int',
-            '' => 'string',
-            'dni' => 'int'
+            'payed_at' => 'required|date',
+            'student_id' => 'required|int',
         ]);
 
         $payment = Payment::create($validatedData);
@@ -38,10 +38,10 @@ class PaymentController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'string',
-            'email' => 'email',
-            'phone_number' => 'string',
-            'dni' => 'int'
+            'type' => 'in:cash,credit_card',
+            'amount' => 'int',
+            'payed_at' => 'date',
+            'student_id' => 'int',
         ]);
 
         $payment = Payment::findOrFail($id);

@@ -9,7 +9,8 @@ class Payment extends Model
     protected $fillable = [
         'amount',
         'student_id',
-        'type'  
+        'type',
+        'payed_at'
     ];
 
     public function student() {
