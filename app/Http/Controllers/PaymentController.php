@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Payment;
+use App\Traits\QueryWhere;
+use App\Traits\QueryOrder;
 
 class PaymentController extends Controller
 {
+    use QueryWhere, QueryOrder;
+
     public function show($id)
     {
         $payment = Payment::with('student')->findOrFail($id);
@@ -14,9 +18,15 @@ class PaymentController extends Controller
         return $payment;
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $payments = Payment::all();
+        $query = Payment::query();
+
+        $this->where($request, $query, ['student_id']);
+
+        $this->order($request, $query);
+
+        $payments = $query->get();
 
         return $payments;
      }
