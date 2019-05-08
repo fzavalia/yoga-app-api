@@ -22,6 +22,9 @@ class RequestHelpers
         return (new RequestHelpers)->_list($request, $query);
     }
 
+    private function __construct()
+    { }
+
     private function _show(Request $request, $id, Builder $query)
     {
         $this->cover($request, $query);

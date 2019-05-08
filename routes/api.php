@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Helpers\RoutingHelpers;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,26 +18,6 @@ Route::middleware("auth:api")->get("/user", function (Request $request) {
     return $request->user();
 });
 
-makeBREAD("students", "StudentController");
-makeBREAD("payments", "PaymentController");
-makeBREAD("yoga_classes", "YogaClassController");
-
-function makeBREAD($prefix, $controller, $ignore = [])
-{
-    Route::prefix($prefix)->group(function () use ($controller, $ignore) {
-
-        $ignore = collect($ignore);
-
-        $setPath = function ($method, $path, $call) use ($controller, $ignore) {
-            if (!$ignore->contains($call)) {
-                Route::{$method}($path, "$controller@$call");
-            }
-        };
-
-        $setPath('post'  , ''    , 'store');
-        $setPath('get'   , ''    , 'list');
-        $setPath('put'   , '{id}', 'update');
-        $setPath('get'   , '{id}', 'show');
-        $setPath('delete', '{id}', 'delete');
-    });
-}
+RoutingHelpers::makeBREAD("students", "StudentController");
+RoutingHelpers::makeBREAD("payments", "PaymentController");
+RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
