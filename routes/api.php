@@ -18,15 +18,24 @@ Route::middleware("auth:api")->get("/user", function (Request $request) {
 });
 
 makeBREAD("students", "StudentController");
-makeBREAD("payments", "PaymentController");
+makeBREAD("payments", "PaymentController", ['update']);
 
-function makeBREAD($prefix, $controller)
+function makeBREAD($prefix, $controller, $ignore = [])
 {
-    Route::prefix($prefix)->group(function () use ($controller) {
-        Route::post  ("",     "$controller@store");
-        Route::get   ("",     "$controller@list");
-        Route::put   ("{id}", "$controller@update");
-        Route::get   ("{id}", "$controller@show");
-        Route::delete("{id}", "$controller@delete");
+    Route::prefix($prefix)->group(function () use ($controller, $ignore) {
+
+        $ignore = collect($ignore);
+
+        $setPath = function ($method, $path, $call) use ($controller, $ignore) {
+            if (!$ignore->contains($call)) {
+                Route::{$method}($path, "$controller@$call");
+            }
+        };
+
+        $setPath('post'  , ''    , 'store');
+        $setPath('get'   , ''    , 'list');
+        $setPath('put'   , '{id}', 'update');
+        $setPath('get'   , '{id}', 'show');
+        $setPath('delete', '{id}', 'delete');
     });
 }
