@@ -17,4 +17,9 @@ class Student extends Model
     {
         return $this->hasMany('App\Payment');
     }
+
+    public function yogaClasses() 
+    {
+        return $this->belongsToMany('App\YogaClass');
+    }
 }
