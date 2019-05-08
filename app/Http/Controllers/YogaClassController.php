@@ -4,38 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\YogaClass;
-use App\Traits\QueryOrder;
-use App\Traits\QueryCover;
-use App\Traits\QueryWhere;
+use App\Helpers\RequestHelpers;
 
 class YogaClassController extends Controller
 {
-    use QueryWhere, QueryOrder, QueryCover;
-
     public function show(Request $request, $id)
     {
-        $query = YogaClass::query();
-
-        $this->cover($request, $query);
-
-        $yogaClass = $query->findOrFail($id);
-
-        return $yogaClass;
+        return RequestHelpers::show($request, $id, YogaClass::query());
     }
 
     public function list(Request $request)
     {
-        $query = YogaClass::query();
-
-        $this->cover($request, $query);
-
-        $this->where($request, $query);
-        
-        $this->order($request, $query);
-
-        $yogaClasses = $query->get();
-
-        return $yogaClasses;
+        return RequestHelpers::list($request, YogaClass::query());
     }
 
     public function store(Request $request)

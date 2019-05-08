@@ -4,39 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Payment;
-use App\Traits\QueryWhere;
-use App\Traits\QueryOrder;
-use App\Traits\QueryCover;
+use App\Helpers\RequestHelpers;
 
 class PaymentController extends Controller
 {
-    use QueryWhere, QueryOrder, QueryCover;
-
     public function show(Request $request, $id)
     {
-        $query = Payment::query();
-
-        $this->cover($request, $query);
-
-        $payment = $query->findOrFail($id);
-
-        return $payment;
+        return RequestHelpers::show($request, $id, Payment::query());
     }
 
     public function list(Request $request)
     {
-        $query = Payment::query();
-
-        $this->cover($request, $query);
-
-        $this->where($request, $query);
-
-        $this->order($request, $query);
-
-        $payments = $query->get();
-
-        return $payments;
-     }
+        return RequestHelpers::list($request, Payment::query());
+    }
 
     public function store(Request $request)
     {

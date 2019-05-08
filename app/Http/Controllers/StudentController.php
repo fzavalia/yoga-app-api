@@ -4,38 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Student;
-use App\Traits\QueryWhere;
-use App\Traits\QueryOrder;
-use App\Traits\QueryCover;
+use App\Helpers\RequestHelpers;
 
 class StudentController extends Controller
 {
-    use QueryWhere, QueryOrder, QueryCover;
-
     public function show(Request $request, $id)
     {
-        $query = Student::query();
-
-        $this->cover($request, $query);
-
-        $student = $query->findOrFail($id);
-
-        return $student;
+        return RequestHelpers::show($request, $id, Student::query());
     }
 
     public function list(Request $request)
     {
-        $query = Student::query();
-
-        $this->cover($request, $query);
-
-        $this->where($request, $query);
-
-        $this->order($request, $query);
-
-        $students = $query->get();
-
-        return $students;
+        return RequestHelpers::list($request, Student::query());
     }
 
     public function store(Request $request)
