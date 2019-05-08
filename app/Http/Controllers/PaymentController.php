@@ -12,9 +12,13 @@ class PaymentController extends Controller
 {
     use QueryWhere, QueryOrder, QueryCover;
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $payment = Payment::with('student')->findOrFail($id);
+        $query = Payment::query();
+
+        $this->cover($request, $query);
+
+        $payment = $query->findOrFail($id);
 
         return $payment;
     }

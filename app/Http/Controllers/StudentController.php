@@ -12,9 +12,13 @@ class StudentController extends Controller
 {
     use QueryWhere, QueryOrder, QueryCover;
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $student = Student::findOrFail($id);
+        $query = Student::query();
+
+        $this->cover($request, $query);
+
+        $student = $query->findOrFail($id);
 
         return $student;
     }

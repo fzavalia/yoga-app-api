@@ -12,9 +12,13 @@ class YogaClassController extends Controller
 {
     use QueryWhere, QueryOrder, QueryCover;
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $yogaClass = YogaClass::findOrFail($id);
+        $query = YogaClass::query();
+
+        $this->cover($request, $query);
+
+        $yogaClass = $query->findOrFail($id);
 
         return $yogaClass;
     }
