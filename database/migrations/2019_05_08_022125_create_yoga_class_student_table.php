@@ -16,8 +16,8 @@ class CreateYogaClassStudentTable extends Migration
         Schema::create('student_yoga_class', function (Blueprint $table) {
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('yoga_class_id');
-            $table->foreign('student_id')->references('id')->on('students');
-            $table->foreign('yoga_class_id')->references('id')->on('yoga_classes');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('yoga_class_id')->references('id')->on('yoga_classes')->onDelete('cascade');
         });
     }
 
