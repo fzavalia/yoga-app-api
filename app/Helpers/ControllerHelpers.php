@@ -8,18 +8,18 @@ use App\Traits\QueryWhere;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
-class RequestHelpers
+class ControllerHelpers
 {
     use QueryCover, QueryOrder, QueryWhere;
 
     public static function show(Request $request, $id, Builder $query)
     {
-        return (new RequestHelpers)->_show($request, $id, $query);
+        return (new ControllerHelpers)->_show($request, $id, $query);
     }
 
     public static function list(Request $request, Builder $query)
     {
-        return (new RequestHelpers)->_list($request, $query);
+        return (new ControllerHelpers)->_list($request, $query);
     }
 
     private function __construct()

@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\YogaClass;
-use App\Helpers\RequestHelpers;
+use App\Helpers\ControllerHelpers;
 
 class YogaClassController extends Controller
 {
     public function show(Request $request, $id)
     {
-        return RequestHelpers::show($request, $id, YogaClass::query());
+        return ControllerHelpers::show($request, $id, YogaClass::query());
     }
 
     public function list(Request $request)
     {
-        return RequestHelpers::list($request, YogaClass::query());
+        return ControllerHelpers::list($request, YogaClass::query());
     }
 
     public function store(Request $request)

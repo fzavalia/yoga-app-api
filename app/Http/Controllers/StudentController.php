@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Student;
-use App\Helpers\RequestHelpers;
+use App\Helpers\ControllerHelpers;
 
 class StudentController extends Controller
 {
     public function show(Request $request, $id)
     {
-        return RequestHelpers::show($request, $id, Student::query());
+        return ControllerHelpers::show($request, $id, Student::query());
     }
 
     public function list(Request $request)
     {
-        return RequestHelpers::list($request, Student::query());
+        return ControllerHelpers::list($request, Student::query());
     }
 
     public function store(Request $request)
