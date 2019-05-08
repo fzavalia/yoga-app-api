@@ -18,7 +18,8 @@ Route::middleware("auth:api")->get("/user", function (Request $request) {
 });
 
 makeBREAD("students", "StudentController");
-makeBREAD("payments", "PaymentController", ['update']);
+makeBREAD("payments", "PaymentController");
+makeBREAD("yoga_classes", "YogaClassController");
 
 function makeBREAD($prefix, $controller, $ignore = [])
 {
