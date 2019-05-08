@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\Traits\QueryWhere;
 use App\Traits\QueryOrder;
+use App\Traits\QueryCover;
 
 class StudentController extends Controller
 {
-    use QueryWhere, QueryOrder;
+    use QueryWhere, QueryOrder, QueryCover;
 
     public function show($id)
     {
@@ -22,7 +23,9 @@ class StudentController extends Controller
     {
         $query = Student::query();
 
-        $this->where($request, $query, ['name', 'email', 'phone_number', 'dni']);
+        $this->cover($request, $query);
+
+        $this->where($request, $query);
 
         $this->order($request, $query);
 

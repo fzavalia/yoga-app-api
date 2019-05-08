@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Payment;
 use App\Traits\QueryWhere;
 use App\Traits\QueryOrder;
+use App\Traits\QueryCover;
 
 class PaymentController extends Controller
 {
-    use QueryWhere, QueryOrder;
+    use QueryWhere, QueryOrder, QueryCover;
 
     public function show($id)
     {
@@ -22,7 +23,9 @@ class PaymentController extends Controller
     {
         $query = Payment::query();
 
-        $this->where($request, $query, ['student_id']);
+        $this->cover($request, $query);
+
+        $this->where($request, $query);
 
         $this->order($request, $query);
 

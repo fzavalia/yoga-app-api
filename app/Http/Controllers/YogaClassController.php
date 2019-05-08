@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\YogaClass;
 use App\Traits\QueryOrder;
+use App\Traits\QueryCover;
+use App\Traits\QueryWhere;
 
 class YogaClassController extends Controller
 {
-    use QueryOrder;
+    use QueryWhere, QueryOrder, QueryCover;
 
     public function show($id)
     {
@@ -21,6 +23,10 @@ class YogaClassController extends Controller
     {
         $query = YogaClass::query();
 
+        $this->cover($request, $query);
+
+        $this->where($request, $query);
+        
         $this->order($request, $query);
 
         $yogaClasses = $query->get();

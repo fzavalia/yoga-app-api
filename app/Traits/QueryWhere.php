@@ -6,13 +6,25 @@ use Illuminate\Http\Request;
 
 trait QueryWhere
 {
-    protected function where(Request $request, $query, $columns)
+    protected function where(Request $request, $query)
     {
-        $columns = collect($columns);
+        $where = $request->query('where');
 
-        foreach ($request->query() as $key => $value) {
-            if ($columns->contains($key)) {
-                $query->where($key, 'like', "%$value%");
+        if ($where) {
+
+            $wherePairs = explode(',', $where);
+
+            $wherePairs = array_map(function ($pair) {
+                return explode(':', $pair);
+            }, $wherePairs);
+
+            foreach ($wherePairs as $pair) {
+
+                if (count($pair) != 2) {
+                    break;
+                }
+                
+                $query->where($pair[0], 'like', "%$pair[1]%");
             }
         }
     }
