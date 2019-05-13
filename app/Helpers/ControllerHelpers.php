@@ -5,12 +5,13 @@ namespace App\Helpers;
 use App\Traits\QueryCover;
 use App\Traits\QueryOrder;
 use App\Traits\QueryWhere;
+use App\Traits\QueryPaginate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
 class ControllerHelpers
 {
-    use QueryCover, QueryOrder, QueryWhere;
+    use QueryCover, QueryOrder, QueryWhere, QueryPaginate;
 
     public static function show(Request $request, $id, Builder $query)
     {
@@ -39,6 +40,10 @@ class ControllerHelpers
         $this->where($request, $query);
 
         $this->order($request, $query);
+
+        if ($this->paginationRequired($request)) {
+            return $this->paginate($request, $query);
+        }
 
         return $query->get();
     }
