@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Traits\QueryCover;
+use App\Traits\QueryInclude;
 use App\Traits\QueryOrder;
 use App\Traits\QueryWhere;
 use App\Traits\QueryPaginate;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ControllerHelpers
 {
-    use QueryCover, QueryOrder, QueryWhere, QueryPaginate;
+    use QueryInclude, QueryOrder, QueryWhere, QueryPaginate;
 
     public static function show(Request $request, $id, Builder $query)
     {
@@ -28,14 +28,14 @@ class ControllerHelpers
 
     private function _show(Request $request, $id, Builder $query)
     {
-        $this->cover($request, $query);
+        $thisinclude($request, $query);
 
         return $query->findOrFail($id);
     }
 
     private function _list(Request $request, Builder $query)
     {
-        $this->cover($request, $query);
+        $thisinclude($request, $query);
 
         $this->where($request, $query);
 

@@ -4,15 +4,15 @@ namespace App\Traits;
 
 use Illuminate\Http\Request;
 
-trait QueryCover
+trait QueryInclude
 {
     /**
      * Will include all relations defined in the 'cover' query string
      */
 
-    protected function cover(Request $request, $query)
+    protected function include(Request $request, $query)
     {
-        $include = $request->query('cover');
+        $include = $request->query('include');
 
         if ($include) {
             $includeValues = explode(',', $include);
