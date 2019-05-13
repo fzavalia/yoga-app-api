@@ -28,14 +28,14 @@ class ControllerHelpers
 
     private function _show(Request $request, $id, Builder $query)
     {
-        $thisinclude($request, $query);
+        $this->include($request, $query);
 
         return $query->findOrFail($id);
     }
 
     private function _list(Request $request, Builder $query)
     {
-        $thisinclude($request, $query);
+        $this->include($request, $query);
 
         $this->where($request, $query);
 
