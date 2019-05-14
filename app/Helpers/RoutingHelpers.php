@@ -12,17 +12,17 @@ class RoutingHelpers
 
             $ignore = collect($ignore);
 
-            $setPath = function ($method, $path, $call) use ($controller, $ignore) {
+            $addRoutePath = function ($method, $path, $call) use ($controller, $ignore) {
                 if (!$ignore->contains($call)) {
                     Route::{$method}($path, "$controller@$call");
                 }
             };
 
-            $setPath('post', '', 'store');
-            $setPath('get', '', 'list');
-            $setPath('put', '{id}', 'update');
-            $setPath('get', '{id}', 'show');
-            $setPath('delete', '{id}', 'delete');
+            $addRoutePath('post', '', 'store');
+            $addRoutePath('get', '', 'list');
+            $addRoutePath('put', '{id}', 'update');
+            $addRoutePath('get', '{id}', 'show');
+            $addRoutePath('delete', '{id}', 'delete');
         });
     }
 
