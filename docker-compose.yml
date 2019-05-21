@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:11
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  postgres-admin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - PGADMIN_LISTEN_PORT=8081
+      - PGADMIN_DEFAULT_PASSWORD=pass
+      - PGADMIN_DEFAULT_EMAIL=user@example.com
+    volumes:
+      - postgres_admin_session:/var/lib/pgadmin
+      - postgres_admin_servers:/pgadmin4/servers.json
+
+volumes:
+  postgres_data:
+  postgres_admin_session:
+  postgres_admin_servers:
