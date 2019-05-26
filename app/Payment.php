@@ -10,7 +10,12 @@ class Payment extends Model
         'amount',
         'student_id',
         'type',
-        'payed_at'
+        'payed_at',
+        'invoiced'
+    ];
+
+    protected $casts = [
+        'invoiced' => 'boolean',
     ];
 
     public function student()

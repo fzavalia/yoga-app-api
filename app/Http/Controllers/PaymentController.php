@@ -25,6 +25,7 @@ class PaymentController extends Controller
             'amount' => 'required|int',
             'payed_at' => 'required|date',
             'student_id' => 'required|int',
+            'invoiced' => 'boolean'
         ]);
 
         $payment = Payment::create($validatedData);
@@ -39,6 +40,7 @@ class PaymentController extends Controller
             'amount' => 'int',
             'payed_at' => 'date',
             'student_id' => 'int',
+            'invoiced' => 'boolean'
         ]);
 
         $payment = Payment::findOrFail($id);
