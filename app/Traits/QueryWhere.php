@@ -12,20 +12,37 @@ trait QueryWhere
 
         if ($where) {
 
-            $wherePairs = explode(',', $where);
+            collect(explode(',', $where))
+                ->map(function ($filter) {
+                    return explode(':', $filter);
+                })
+                ->filter(function ($filter) {
+                    return count($filter) == 2;
+                })
+                ->each(function ($filter) use ($query) {
+                    $query->where($filter[0], 'like', "%$filter[1]%");
+                });
+        }
+    }
 
-            $wherePairs = array_map(function ($pair) {
-                return explode(':', $pair);
-            }, $wherePairs);
+    protected function whereBetween(Request $request, $query)
+    {
+        $whereBetween = $request->query('where_between');
 
-            foreach ($wherePairs as $pair) {
+        if ($whereBetween) {
 
-                if (count($pair) != 2) {
-                    break;
-                }
-                
-                $query->where($pair[0], 'like', "%$pair[1]%");
-            }
+            collect(explode(',', $whereBetween))
+                ->map(function ($filter) {
+                    return explode(':', $filter);
+                })
+                ->filter(function ($filter) {
+                    return count($filter) == 3;
+                })
+                ->each(function ($filter) use ($query) {
+                    $query
+                        ->where($filter[0], '>=', $filter[1])
+                        ->where($filter[0], '<=', $filter[2]);
+                });
         }
     }
 }

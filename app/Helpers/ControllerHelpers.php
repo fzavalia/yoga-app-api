@@ -39,6 +39,8 @@ class ControllerHelpers
 
         $this->where($request, $query);
 
+        $this->whereBetween($request, $query);
+
         $this->order($request, $query);
 
         if ($this->paginationRequired($request)) {
