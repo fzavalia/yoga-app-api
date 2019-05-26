@@ -25,6 +25,27 @@ trait QueryWhere
         }
     }
 
+    protected function whereBetween(Request $request, $query)
+    {
+        $whereBetween = $request->query('where_between');
+
+        if ($whereBetween) {
+
+            collect(explode(',', $whereBetween))
+                ->map(function ($filter) {
+                    return explode(':', $filter);
+                })
+                ->filter(function ($filter) {
+                    return count($filter) == 3;
+                })
+                ->each(function ($filter) use ($query) {
+                    $query
+                        ->where($filter[0], '>=', $filter[1])
+                        ->where($filter[0], '<=', $filter[2]);
+                });
+        }
+    }
+
     protected function whereRelation(Request $request, $query)
     {
         $whereRelation = $request->query('where_relation');
@@ -49,27 +70,6 @@ trait QueryWhere
                     $query->whereHas($filter[0][0], function ($query) use ($filter) {
                         $query->where($filter[0][1], 'like', "%$filter[1]%");
                     });
-                });
-        }
-    }
-
-    protected function whereBetween(Request $request, $query)
-    {
-        $whereBetween = $request->query('where_between');
-
-        if ($whereBetween) {
-
-            collect(explode(',', $whereBetween))
-                ->map(function ($filter) {
-                    return explode(':', $filter);
-                })
-                ->filter(function ($filter) {
-                    return count($filter) == 3;
-                })
-                ->each(function ($filter) use ($query) {
-                    $query
-                        ->where($filter[0], '>=', $filter[1])
-                        ->where($filter[0], '<=', $filter[2]);
                 });
         }
     }
