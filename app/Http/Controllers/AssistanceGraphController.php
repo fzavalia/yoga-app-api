@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\YogaClass;
 use App\Helpers\ControllerHelpers;
 use Carbon\Carbon;
