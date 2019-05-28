@@ -23,6 +23,11 @@ class ControllerHelpers
         return (new ControllerHelpers)->_list($request, $query);
     }
 
+    public static function jsonResponse($content, $status = 200, $headers = [])
+    {
+        return response($content, $status, array_merge($headers, ['Content-Type' => 'application/json']));
+    }
+
     private function __construct()
     { }
 

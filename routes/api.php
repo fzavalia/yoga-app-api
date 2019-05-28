@@ -21,3 +21,5 @@ Route::middleware("auth:api")->get("/user", function (Request $request) {
 RoutingHelpers::makeBREAD("students", "StudentController");
 RoutingHelpers::makeBREAD("payments", "PaymentController");
 RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
+
+Route::get('/assistance_graphs/{date}', "AssistanceGraphController");

@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Payment extends Model
+class Payment extends BaseModel
 {
     protected $fillable = [
         'amount',
