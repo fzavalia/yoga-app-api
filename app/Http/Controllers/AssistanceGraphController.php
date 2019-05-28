@@ -34,7 +34,7 @@ class AssistanceGraphController extends Controller
             ->flatten()
             ->unique();
 
-        $students = Student::whereIn('id', $studentIds)->select('id', 'name')->get();
+        $students = Student::whereIn('id', $studentIds)->select('id', 'name')->orderBy('name', 'asc')->get();
 
         $payments = Payment::where('payed_at', '>=', $d1)->where('payed_at', '<=', $d2)->select('id', 'student_id', 'amount')->get();
 
