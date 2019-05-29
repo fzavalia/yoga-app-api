@@ -7,6 +7,7 @@ use App\Helpers\ControllerHelpers;
 use Carbon\Carbon;
 use App\Student;
 use App\Payment;
+use Illuminate\Http\Request;
 
 class AssistanceTableController extends Controller
 {
