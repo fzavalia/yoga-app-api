@@ -58,8 +58,6 @@ class YogaClassController extends Controller
             }
         }
 
-        info($yogaClass->date);
-
         $yogaClass->update($validatedData);
 
         $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
