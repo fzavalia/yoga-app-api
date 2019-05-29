@@ -14,7 +14,7 @@ class AssistanceTableController extends Controller
      * Given a date, will return the classes, students and payments done in the month from the date
      * to properly build an assistance graph
      */
-    public function __invoke($date)
+    public function show($date)
     {
         $d1 = Carbon::parse($date);
         $d2 = Carbon::parse($d1);
@@ -33,5 +33,19 @@ class AssistanceTableController extends Controller
             'payments' => $payments,
             'students' => $students
         ]);
+    }
+
+    public function updateYogaClass(Request $request, $date)
+    {
+        $validatedData = $request->validate([
+            'student_ids' => 'array',
+            'student_ids.*' => 'int'
+        ]);
+
+        $yogaClass = YogaClass::firstOrCreate(['date' => $date]);
+
+        $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
+
+        return $yogaClass;
     }
 }

@@ -22,4 +22,5 @@ RoutingHelpers::makeBREAD("students", "StudentController");
 RoutingHelpers::makeBREAD("payments", "PaymentController");
 RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
 
-Route::get('/assistance_tables/{date}', "AssistanceTableController");
+Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
+Route::put('/assistance_tables/yoga_classes/{date}', "AssistanceTableController@updateYogaClass");
