@@ -11,7 +11,7 @@ class YogaClass extends Model
         'created_at',
         'updated_at'
     ];
-    
+
     protected $fillable = [
         'date'
     ];
@@ -19,5 +19,12 @@ class YogaClass extends Model
     public function students()
     {
         return $this->belongsToMany('App\Student');
+    }
+
+    public function syncStudentsIfArrayContainsStudentIds(array $arrayWithStudentIds)
+    {
+        if (array_key_exists('student_ids', $arrayWithStudentIds)) {
+            $this->students()->sync($arrayWithStudentIds['student_ids']);
+        }
     }
 }

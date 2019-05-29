@@ -29,7 +29,7 @@ class YogaClassController extends Controller
 
         $yogaClass = YogaClass::create($validatedData);
 
-        $this->trySyncStudents($validatedData, $yogaClass);
+        $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
         return $yogaClass;
     }
@@ -62,7 +62,7 @@ class YogaClassController extends Controller
 
         $yogaClass->update($validatedData);
 
-        $this->trySyncStudents($validatedData, $yogaClass);
+        $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
         return $yogaClass;
     }
@@ -74,12 +74,5 @@ class YogaClassController extends Controller
         $yogaClass->delete();
 
         return $yogaClass;
-    }
-
-    private function trySyncStudents(array $arrayWithStudentIds, YogaClass $yogaClass)
-    {
-        if (array_key_exists('student_ids', $arrayWithStudentIds)) {
-            $yogaClass->students()->sync($arrayWithStudentIds['student_ids']);
-        }
     }
 }
