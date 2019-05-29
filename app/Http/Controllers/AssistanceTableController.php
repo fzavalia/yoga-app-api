@@ -24,17 +24,7 @@ class AssistanceTableController extends Controller
 
         $classes = YogaClass::with('students:id')->where('date', '>=', $d1)->where('date', '<=', $d2)->get();
 
-        $studentIds = $classes
-            ->map(function ($class) {
-                return $class->students
-                    ->map(function ($student) {
-                        return $student->id;
-                    });
-            })
-            ->flatten()
-            ->unique();
-
-        $students = Student::whereIn('id', $studentIds)->select('id', 'name')->orderBy('name', 'asc')->get();
+        $students = Student::select('id', 'name')->get();
 
         $payments = Payment::where('payed_at', '>=', $d1)->where('payed_at', '<=', $d2)->select('id', 'student_id', 'amount')->get();
 
