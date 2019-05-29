@@ -22,4 +22,4 @@ RoutingHelpers::makeBREAD("students", "StudentController");
 RoutingHelpers::makeBREAD("payments", "PaymentController");
 RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
 
-Route::get('/assistance_graphs/{date}', "AssistanceGraphController");
+Route::get('/assistance_tables/{date}', "AssistanceTableController");

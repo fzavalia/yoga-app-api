@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use App\Student;
 use App\Payment;
 
-class AssistanceGraphController extends Controller
+class AssistanceTableController extends Controller
 {
     /**
      * Given a date, will return the classes, students and payments done in the month from the date
