@@ -14,7 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   postgres-admin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:4.7
     restart: always
     ports:
       - 8081:8081
