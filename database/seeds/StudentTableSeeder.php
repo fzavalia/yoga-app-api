@@ -15,7 +15,7 @@ class StudentTableSeeder extends Seeder
     {
         DB::table('students')->delete();
 
-        $faker = (new Faker\Factory)::create();
+        $faker = Faker\Factory::create();
 
         for ($i = 0; $i <= 20; $i++) {
             Student::create([
