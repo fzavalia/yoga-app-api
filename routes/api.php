@@ -18,14 +18,15 @@ Route::post('/auth/register', 'AuthController@register');
 Route::post('/auth/login', 'AuthController@login');
 
 Route::middleware("auth:api")->group(function () {
+
     Route::get("/user", function (Request $request) {
         return $request->user();
     });
+
+    RoutingHelpers::makeBREAD("students", "StudentController");
+    RoutingHelpers::makeBREAD("payments", "PaymentController");
+    RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
+
+    Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
+    Route::put('/assistance_tables/yoga_classes/{date}', "AssistanceTableController@updateYogaClass");
 });
-
-RoutingHelpers::makeBREAD("students", "StudentController");
-RoutingHelpers::makeBREAD("payments", "PaymentController");
-RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
-
-Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
-Route::put('/assistance_tables/yoga_classes/{date}', "AssistanceTableController@updateYogaClass");
