@@ -13,7 +13,8 @@ class YogaClass extends Model
     ];
 
     protected $fillable = [
-        'date'
+        'date',
+        'user_id'
     ];
 
     public function students()

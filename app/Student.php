@@ -8,7 +8,8 @@ class Student extends BaseModel
         'name',
         'email',
         'phone_number',
-        'dni'
+        'dni',
+        'user_id'
     ];
 
     public function payments()

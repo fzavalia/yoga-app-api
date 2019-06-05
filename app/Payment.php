@@ -9,7 +9,8 @@ class Payment extends BaseModel
         'student_id',
         'type',
         'payed_at',
-        'invoiced'
+        'invoiced',
+        'user_id'
     ];
 
     protected $casts = [
