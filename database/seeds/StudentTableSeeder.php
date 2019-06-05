@@ -23,5 +23,12 @@ class StudentTableSeeder extends Seeder
                 'user_id' => 1
             ]);
         }
+
+        for ($i = 0; $i <= 10; $i++) {
+            Student::create([
+                'name' => $faker->name(),
+                'user_id' => 2
+            ]);
+        }
     }
 }
