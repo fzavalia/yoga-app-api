@@ -55,7 +55,19 @@ class AssistanceTableController extends Controller
             'student_ids.*' => 'int'
         ]);
 
-        $yogaClass = YogaClass::firstOrCreate(['date' => $date], ['user_id' => $request->user()->id]);
+        $userId = $request->user()->id;
+
+        $yogaClass = YogaClass::where('date', $date)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($yogaClass) {
+            if ($yogaClass->user_id != $userId) {
+                abort(403);
+            }
+        } else {
+            $yogaClass = YogaClass::create(['date' => $date, 'user_id' => $request->user()->id]);
+        }
 
         $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
