@@ -19,7 +19,8 @@ class StudentTableSeeder extends Seeder
 
         for ($i = 0; $i <= 20; $i++) {
             Student::create([
-                'name' => $faker->name()
+                'name' => $faker->name(),
+                'user_id' => 1
             ]);
         }
     }
