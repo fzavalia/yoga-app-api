@@ -25,12 +25,20 @@ class ControllerHelpers
 
     public static function showForCurrentUser(Request $request, $id, Builder $query)
     {
-        return (new ControllerHelpers)->_showForCurrentUser($request, $id, $query);
+        $item = self::show($request, $id, $query);
+
+        if ($item->user_id != $request->user()->id) {
+            abort(403, 'Resource not available for this user');
+        }
+
+        return $item;
     }
 
     public static function listForCurrentUser(Request $request, Builder $query)
     {
-        return (new ControllerHelpers)->_listForCurrentUser($request, $query);
+        $query->where('user_id', $request->user()->id);
+
+        return self::list($request, $query);
     }
 
     public static function jsonResponse($content, $status = 200, $headers = [])
@@ -67,17 +75,6 @@ class ControllerHelpers
         }
 
         return $query->get();
-    }
-
-    private function _showForCurrentUser(Request $request, $id, Builder $query)
-    {
-        $item = $this->_show($request, $id, $query);
-
-        if ($item->user_id != $request->user()->id) {
-            abort(403, 'Resource not available for this user');
-        }
-
-        return $item;
     }
 
     private function _listForCurrentUser(Request $request, Builder $query)
