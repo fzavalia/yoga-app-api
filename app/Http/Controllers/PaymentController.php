@@ -28,6 +28,8 @@ class PaymentController extends Controller
             'invoiced' => 'boolean'
         ]);
 
+        $validatedData['user_id'] = $request->user()->id;
+
         $payment = Payment::create($validatedData);
 
         return $payment;
@@ -45,14 +47,18 @@ class PaymentController extends Controller
 
         $payment = Payment::findOrFail($id);
 
+        ControllerHelpers::validateUserCanHandleResource($request, $payment);
+
         $payment->update($validatedData);
 
         return $payment;
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         $payment = Payment::findOrFail($id);
+
+        ControllerHelpers::validateUserCanHandleResource($request, $payment);
 
         $payment->delete();
 

@@ -8,6 +8,7 @@ use App\Traits\QueryWhere;
 use App\Traits\QueryPaginate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ControllerHelpers
 {
@@ -39,6 +40,12 @@ class ControllerHelpers
         $query->where('user_id', $request->user()->id);
 
         return self::list($request, $query);
+    }
+
+    public static function validateUserCanHandleResource(Request $request, Model $resource) {
+        if ($request->user()->id !== $resource->user_id) {
+            abort(403);
+        }
     }
 
     public static function jsonResponse($content, $status = 200, $headers = [])

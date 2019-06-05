@@ -27,6 +27,8 @@ class YogaClassController extends Controller
             'student_ids.*' => 'int'
         ]);
 
+        $validatedData['user_id'] = $request->user()->id;
+
         $yogaClass = YogaClass::create($validatedData);
 
         $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
@@ -42,6 +44,8 @@ class YogaClassController extends Controller
         ]);
 
         $yogaClass = YogaClass::findOrFail($id);
+
+        ControllerHelpers::validateUserCanHandleResource($request, $yogaClass);
 
         // Will only validate date uniqueness when provided date is 
         // different from the stored date.
@@ -65,9 +69,11 @@ class YogaClassController extends Controller
         return $yogaClass;
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         $yogaClass = YogaClass::findOrFail($id);
+
+        ControllerHelpers::validateUserCanHandleResource($request, $yogaClass);
 
         $yogaClass->delete();
 

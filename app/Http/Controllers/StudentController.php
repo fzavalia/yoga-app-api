@@ -27,6 +27,8 @@ class StudentController extends Controller
             'dni' => 'int'
         ]);
 
+        $validatedData['user_id'] = $request->user()->id;
+
         $student = Student::create($validatedData);
 
         return $student;
@@ -43,14 +45,18 @@ class StudentController extends Controller
 
         $student = Student::findOrFail($id);
 
+        ControllerHelpers::validateUserCanHandleResource($request, $student);
+
         $student->update($validatedData);
 
         return $student;
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         $student = Student::findOrFail($id);
+
+        ControllerHelpers::validateUserCanHandleResource($request, $student);
 
         $student->delete();
 

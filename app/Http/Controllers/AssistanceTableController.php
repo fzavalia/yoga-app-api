@@ -62,9 +62,7 @@ class AssistanceTableController extends Controller
             ->first();
 
         if ($yogaClass) {
-            if ($yogaClass->user_id != $userId) {
-                abort(403);
-            }
+            ControllerHelpers::validateUserCanHandleResource($request, $yogaClass);
         } else {
             $yogaClass = YogaClass::create(['date' => $date, 'user_id' => $request->user()->id]);
         }
