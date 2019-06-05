@@ -10,12 +10,12 @@ class PaymentController extends Controller
 {
     public function show(Request $request, $id)
     {
-        return ControllerHelpers::show($request, $id, Payment::query());
+        return ControllerHelpers::showForCurrentUser($request, $id, Payment::query());
     }
 
     public function list(Request $request)
     {
-        return ControllerHelpers::list($request, Payment::query());
+        return ControllerHelpers::listForCurrentUser($request, Payment::query());
     }
 
     public function store(Request $request)

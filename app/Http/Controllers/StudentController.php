@@ -10,12 +10,12 @@ class StudentController extends Controller
 {
     public function show(Request $request, $id)
     {
-        return ControllerHelpers::show($request, $id, Student::query());
+        return ControllerHelpers::showForCurrentUser($request, $id, Student::query());
     }
 
     public function list(Request $request)
     {
-        return ControllerHelpers::list($request, Student::query());
+        return ControllerHelpers::listForCurrentUser($request, Student::query());
     }
 
     public function store(Request $request)

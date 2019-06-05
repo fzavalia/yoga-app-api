@@ -11,12 +11,12 @@ class YogaClassController extends Controller
 {
     public function show(Request $request, $id)
     {
-        return ControllerHelpers::show($request, $id, YogaClass::query());
+        return ControllerHelpers::showForCurrentUser($request, $id, YogaClass::query());
     }
 
     public function list(Request $request)
     {
-        return ControllerHelpers::list($request, YogaClass::query());
+        return ControllerHelpers::listForCurrentUser($request, YogaClass::query());
     }
 
     public function store(Request $request)
