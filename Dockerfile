@@ -59,7 +59,9 @@ RUN sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /e
 
 EXPOSE 80
 
-# Download oauth keys, set permissions and start server
+# Download oauth keys
+# Give permissions to web server
+# Start web server
 
 CMD ~/.local/bin/aws s3 cp ${S3_OAUTH_PUBLIC_KEY_PATH} ./storage && \
     ~/.local/bin/aws s3 cp ${S3_OAUTH_PRIVATE_KEY_PATH} ./storage && \ 
