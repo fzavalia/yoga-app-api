@@ -1,9 +1,9 @@
 FROM php:7.3.6-apache
 
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG S3_OAUTH_PUBLIC_KEY_PATH
-ARG S3_OAUTH_PRIVATE_KEY_PATH
+ENV AWS_ACCESS_KEY_ID=
+ENV AWS_SECRET_ACCESS_KEY=
+ENV S3_OAUTH_PUBLIC_KEY_PATH=
+ENV S3_OAUTH_PRIVATE_KEY_PATH=
 
 # update
 
@@ -18,7 +18,8 @@ RUN apt-get install -y \
     libzip-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
-    libpng-dev
+    libpng-dev \
+    libpq-dev
 
 # composer
 
@@ -47,20 +48,20 @@ RUN composer install --no-dev --no-scripts
 
 COPY . .
 
-# Download oauth keys
-
-RUN ~/.local/bin/aws s3 cp ${S3_OAUTH_PUBLIC_KEY_PATH} ./storage && \
-    ~/.local/bin/aws s3 cp ${S3_OAUTH_PRIVATE_KEY_PATH} ./storage
-
-# permissions
-
-RUN chown -R www-data:www-data ./storage ./bootstrap/cache
-
-# enable mod_rewrite
+# enable mod_rewrite so laravel routing can work
 
 RUN a2enmod rewrite
 
-# change apache document root
+# change apache document root to laravel public route
 
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+EXPOSE 80
+
+# Download oauth keys, set permissions and start server
+
+CMD ~/.local/bin/aws s3 cp ${S3_OAUTH_PUBLIC_KEY_PATH} ./storage && \
+    ~/.local/bin/aws s3 cp ${S3_OAUTH_PRIVATE_KEY_PATH} ./storage && \ 
+    chown -R www-data:www-data ./storage ./bootstrap/cache && \
+    apache2-foreground
