@@ -1,10 +1,8 @@
 FROM composer:1.8.5 as dependencies
 
-COPY composer.json composer.lock ./
-COPY database/seeds database/seeds
-COPY database/factories database/factories
+COPY . .
 
-RUN composer install --no-dev --no-scripts
+RUN composer install
 
 FROM php:7.3.6-apache
 
@@ -17,10 +15,13 @@ RUN a2enmod rewrite
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+# system dependencies
+
+RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
+
 # copy app
 
-COPY . .
-COPY --from=dependencies /app/vendor vendor
+COPY --from=dependencies /app .
 
 # permissions
 
