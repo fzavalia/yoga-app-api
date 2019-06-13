@@ -32,9 +32,7 @@ COPY --from=dependencies /app/vendor vendor
 
 # create default files for the required elements to prevent an error
 
-RUN touch ./oauth-private.key && touch ./oauth-public.key && touch ./.env
-
-EXPOSE 8000
+RUN touch ./storage/oauth-private.key && touch ./storage/oauth-public.key && touch ./.env
 
 # permissions
 
