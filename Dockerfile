@@ -1,8 +1,11 @@
 FROM composer:1.8.5 as dependencies
 
-COPY . .
+COPY composer.json composer.json
+COPY composer.lock composer.lock
+COPY database/seeds database/seeds
+COPY database/factories database/factories
 
-RUN composer install
+RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
 
 FROM php:7.3.6-apache
 
@@ -21,7 +24,17 @@ RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo
 
 # copy app
 
-COPY --from=dependencies /app .
+COPY . .
+
+# copy dependencies from previous stage 
+
+COPY --from=dependencies /app/vendor vendor
+
+# create default files for the required elements to prevent an error
+
+RUN touch ./oauth-private.key && touch ./oauth-public.key && touch ./.env
+
+EXPOSE 8000
 
 # permissions
 
