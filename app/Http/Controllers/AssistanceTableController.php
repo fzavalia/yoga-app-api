@@ -48,6 +48,29 @@ class AssistanceTableController extends Controller
         ]);
     }
 
+    public function updateStudentAssistance(Request $request, $date, $student_id)
+    {
+        $request->validate([
+            'assisted' => 'required|boolean'
+        ]);
+
+        $yogaClass = $this->getClassForDate($request, $date);
+
+        $yogaClassStudentIds = $yogaClass->students->map(function ($student) {
+            return $student->id;
+        });
+
+        if ($request->assisted) {
+            $yogaClassStudentIds->push($student_id);
+        } else {
+            $yogaClassStudentIds = $yogaClassStudentIds->except($student_id);
+        }
+
+        $yogaClass->students->sync($yogaClassStudentIds);
+
+        return $yogaClass;
+    }
+
     public function updateYogaClass(Request $request, $date)
     {
         $validatedData = $request->validate([
@@ -55,6 +78,15 @@ class AssistanceTableController extends Controller
             'student_ids.*' => 'int'
         ]);
 
+        $yogaClass = $this->getClassForDate($request, $date);
+
+        $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
+
+        return $yogaClass;
+    }
+
+    private function getClassForDate(Request $request, $date)
+    {
         $userId = $request->user()->id;
 
         $yogaClass = YogaClass::where('date', $date)
@@ -66,8 +98,6 @@ class AssistanceTableController extends Controller
         } else {
             $yogaClass = YogaClass::create(['date' => $date, 'user_id' => $request->user()->id]);
         }
-
-        $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
         return $yogaClass;
     }

@@ -29,4 +29,5 @@ Route::middleware("auth:api")->group(function () {
 
     Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
     Route::put('/assistance_tables/yoga_classes/{date}', "AssistanceTableController@updateYogaClass");
+    Route::put('/assistance_tables/yoga_classes/{date}/students/{id}', "AssistanceTableController@updateStudentAssistance");
 });
