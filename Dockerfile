@@ -37,3 +37,5 @@ RUN touch ./storage/oauth-private.key && touch ./storage/oauth-public.key && tou
 # permissions
 
 RUN chown -R www-data:www-data ./storage ./bootstrap/cache
+
+CMD php artisan migrate --force && apache2-foreground
