@@ -48,7 +48,7 @@ class AssistanceTableController extends Controller
         ]);
     }
 
-    public function updateStudentAssistance(Request $request, $date, $student_id)
+    public function updateStudentAssistance(Request $request, $date, $studentId)
     {
         $request->validate([
             'assisted' => 'required|boolean'
@@ -61,14 +61,16 @@ class AssistanceTableController extends Controller
         });
 
         if ($request->assisted) {
-            $yogaClassStudentIds->push($student_id);
+            $yogaClassStudentIds->push($studentId);
         } else {
-            $yogaClassStudentIds = $yogaClassStudentIds->except($student_id);
+            $yogaClassStudentIds = $yogaClassStudentIds->filter(function ($sid) use ($studentId) {
+                return $sid != $studentId;
+            });
         }
 
-        $yogaClass->students->sync($yogaClassStudentIds);
+        $yogaClass->students()->sync($yogaClassStudentIds->toArray());
 
-        return $yogaClass;
+        return ControllerHelpers::emptyResponse();
     }
 
     public function updateYogaClass(Request $request, $date)
@@ -82,7 +84,7 @@ class AssistanceTableController extends Controller
 
         $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
-        return $yogaClass;
+        return ControllerHelpers::emptyResponse();
     }
 
     private function getClassForDate(Request $request, $date)

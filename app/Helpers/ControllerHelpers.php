@@ -42,7 +42,8 @@ class ControllerHelpers
         return self::list($request, $query);
     }
 
-    public static function validateUserCanHandleResource(Request $request, Model $resource) {
+    public static function validateUserCanHandleResource(Request $request, Model $resource)
+    {
         if ($request->user()->id !== $resource->user_id) {
             abort(403);
         }
@@ -51,6 +52,11 @@ class ControllerHelpers
     public static function jsonResponse($content, $status = 200, $headers = [])
     {
         return response($content, $status, array_merge($headers, ['Content-Type' => 'application/json']));
+    }
+
+    public static function emptyResponse()
+    {
+        return response(null, 204);
     }
 
     private function __construct()
