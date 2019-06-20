@@ -20,7 +20,7 @@ trait QueryWhere
                     return count($filter) == 2;
                 })
                 ->each(function ($filter) use ($query) {
-                    $query->where($filter[0], 'like', "%$filter[1]%");
+                    $query->where($filter[0], 'ilike', "%$filter[1]%");
                 });
         }
     }
@@ -68,7 +68,7 @@ trait QueryWhere
                 })
                 ->each(function ($filter) use ($query) {
                     $query->whereHas($filter[0][0], function ($query) use ($filter) {
-                        $query->where($filter[0][1], 'like', "%$filter[1]%");
+                        $query->where($filter[0][1], 'ilike', "%$filter[1]%");
                     });
                 });
         }
