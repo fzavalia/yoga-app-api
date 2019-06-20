@@ -89,11 +89,4 @@ class ControllerHelpers
 
         return $query->get();
     }
-
-    private function _listForCurrentUser(Request $request, Builder $query)
-    {
-        $query->where('user_id', $request->user()->id);
-
-        return $this->_list($request, $query);
-    }
 }
