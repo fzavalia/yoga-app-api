@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // Validate composite keys
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
+
     ],
 
     /*
