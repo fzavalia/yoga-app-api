@@ -21,6 +21,7 @@ class YogaClassController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'date' => 'required|date',
             'student_ids' => 'array',
             'student_ids.*' => 'int'
         ]);
@@ -37,6 +38,7 @@ class YogaClassController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
+            'date' => 'date',
             'student_ids' => 'array',
             'student_ids.*' => 'int'
         ]);
