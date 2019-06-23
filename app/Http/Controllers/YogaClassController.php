@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\YogaClass;
 use App\Helpers\ControllerHelpers;
 use App\Rules\UniqueWith;
+use Carbon\Carbon;
 
 class YogaClassController extends Controller
 {
