@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=yoga-app
+      - POSTGRES_DB=yoga_app
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
