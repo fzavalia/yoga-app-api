@@ -64,4 +64,15 @@ class PaymentController extends Controller
 
         return $payment;
     }
+
+    public function total(Request $request)
+    {
+        $query = Payment::query();
+
+        ControllerHelpers::listForCurrentUserQuery($request, $query);
+
+        $total = $query->sum('amount');
+
+        return ControllerHelpers::jsonResponse(['total' => $total]);
+    }
 }

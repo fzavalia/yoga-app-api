@@ -24,6 +24,14 @@ class ControllerHelpers
         return (new ControllerHelpers)->_list($request, $query);
     }
 
+    /**
+     * The difference with list is that it returns the query instead of the results
+     */
+    public static function listQuery(Request $request, Builder $query)
+    {
+        return (new ControllerHelpers)->_listQuery($request, $query);
+    }
+
     public static function showForCurrentUser(Request $request, $id, Builder $query)
     {
         $item = self::show($request, $id, $query);
@@ -40,6 +48,16 @@ class ControllerHelpers
         $query->where('user_id', $request->user()->id);
 
         return self::list($request, $query);
+    }
+
+    /**
+     * The difference with listForCurrentUser is that it returns the query instead of the results
+     */
+    public static function listForCurrentUserQuery(Request $request, Builder $query)
+    {
+        $query->where('user_id', $request->user()->id);
+
+        return self::listQuery($request, $query);
     }
 
     public static function validateUserCanHandleResource(Request $request, Model $resource)
@@ -71,6 +89,17 @@ class ControllerHelpers
 
     private function _list(Request $request, Builder $query)
     {
+        $this->_listQuery($request, $query);
+
+        if ($this->paginationRequired($request)) {
+            return $this->paginate($request, $query);
+        }
+
+        return $query->get();
+    }
+
+    private function _listQuery(Request $request, Builder $query)
+    {
         $this->include($request, $query);
 
         $this->where($request, $query);
@@ -82,11 +111,5 @@ class ControllerHelpers
         $this->whereRelationBetween($request, $query);
 
         $this->order($request, $query);
-
-        if ($this->paginationRequired($request)) {
-            return $this->paginate($request, $query);
-        }
-
-        return $query->get();
     }
 }

@@ -24,7 +24,10 @@ Route::middleware("auth:api")->group(function () {
     });
 
     RoutingHelpers::makeBREAD("students", "StudentController");
+
+    Route::get('/payments/total', "PaymentController@total");
     RoutingHelpers::makeBREAD("payments", "PaymentController");
+
     RoutingHelpers::makeBREAD("yoga_classes", "YogaClassController");
 
     Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
