@@ -104,6 +104,8 @@ class ControllerHelpers
 
         $this->where($request, $query);
 
+        $this->whereEquals($request, $query);
+
         $this->whereBetween($request, $query);
 
         $this->whereRelation($request, $query);

@@ -25,6 +25,25 @@ trait QueryWhere
         }
     }
 
+    protected function whereEquals(Request $request, $query)
+    {
+        $whereEquals = $request->query('where_equals');
+
+        if ($whereEquals) {
+
+            collect(explode(',', $whereEquals))
+                ->map(function ($filter) {
+                    return explode(':', $filter);
+                })
+                ->filter(function ($filter) {
+                    return count($filter) == 2;
+                })
+                ->each(function ($filter) use ($query) {
+                    $query->where($filter[0], $filter[1]);
+                });
+        }
+    }
+
     protected function whereBetween(Request $request, $query)
     {
         $whereBetween = $request->query('where_between');
