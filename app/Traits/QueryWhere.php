@@ -93,6 +93,34 @@ trait QueryWhere
         }
     }
 
+    protected function whereRelationEquals(Request $request, $query)
+    {
+        $whereRelationEquals = $request->query('where_relation_equals');
+
+        if ($whereRelationEquals) {
+
+            collect(explode(',', $whereRelationEquals))
+                ->map(function ($filter) {
+                    return explode(':', $filter);
+                })
+                ->filter(function ($filter) {
+                    return count($filter) == 2;
+                })
+                ->map(function ($filter) {
+                    $filter[0] = explode('.', $filter[0]);
+                    return $filter;
+                })
+                ->filter(function ($filter) {
+                    return count($filter[0]) == 2;
+                })
+                ->each(function ($filter) use ($query) {
+                    $query->whereHas($filter[0][0], function ($query) use ($filter) {
+                        $query->where($filter[0][1], $filter[1]);
+                    });
+                });
+        }
+    }
+
     protected function whereRelationBetween(Request $request, $query)
     {
         $whereRelationBetween = $request->query('where_relation_between');

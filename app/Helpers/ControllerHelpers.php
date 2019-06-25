@@ -110,6 +110,8 @@ class ControllerHelpers
 
         $this->whereRelation($request, $query);
 
+        $this->whereRelationEquals($request, $query);
+
         $this->whereRelationBetween($request, $query);
 
         $this->order($request, $query);
