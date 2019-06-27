@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\YogaClass;
 use App\Helpers\ControllerHelpers;
-use Carbon\Carbon;
 use App\Student;
 use App\Payment;
 use Illuminate\Http\Request;
+use App\Helpers\DateHelpers;
 
 class AssistanceTableController extends Controller
 {
@@ -17,11 +17,12 @@ class AssistanceTableController extends Controller
      */
     public function show(Request $request, $date)
     {
-        $d1 = Carbon::parse($date);
-        $d2 = Carbon::parse($d1);
+        // Get date range from which the queries will be made
 
-        $d1->setDay(1);
-        $d2->setDay($d1->daysInMonth);
+        $startingAndEndingDatesOfMonth = DateHelpers::getStartingAndEndingDatesOfMonth($date);
+
+        $d1 = $startingAndEndingDatesOfMonth->start;
+        $d2 = $startingAndEndingDatesOfMonth->end;
 
         $userId = $request->user()->id;
 
