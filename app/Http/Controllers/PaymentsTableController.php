@@ -7,6 +7,7 @@ use App\Payment;
 use Illuminate\Http\Request;
 use App\Helpers\DateHelpers;
 use App\Helpers\ControllerHelpers;
+use App\Helpers\ResponseHelpers;
 
 class PaymentsTableController extends Controller
 {
@@ -98,7 +99,7 @@ class PaymentsTableController extends Controller
                 return $student;
             });
 
-        return ControllerHelpers::jsonResponse([
+        return ResponseHelpers::jsonResponse([
             'total' => $totalPayedInGivenMonth,
             'total_invoiced' => $totalInvoicedInGivenMonth,
             'students' => $studentsWithTotalPayedAndClassesAssistedInMonth

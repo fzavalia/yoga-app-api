@@ -8,6 +8,7 @@ use App\Student;
 use App\Payment;
 use Illuminate\Http\Request;
 use App\Helpers\DateHelpers;
+use App\Helpers\ResponseHelpers;
 
 class AssistanceTableController extends Controller
 {
@@ -42,7 +43,7 @@ class AssistanceTableController extends Controller
             ->select('id', 'student_id', 'amount')
             ->get();
 
-        return ControllerHelpers::jsonResponse([
+        return ResponseHelpers::jsonResponse([
             'yoga_classes' => $classes,
             'payments' => $payments,
             'students' => $students
@@ -71,7 +72,7 @@ class AssistanceTableController extends Controller
 
         $yogaClass->students()->sync($yogaClassStudentIds->toArray());
 
-        return ControllerHelpers::emptyResponse();
+        return ResponseHelpers::emptyResponse();
     }
 
     public function updateYogaClass(Request $request, $date)
@@ -85,7 +86,7 @@ class AssistanceTableController extends Controller
 
         $yogaClass->syncStudentsIfArrayContainsStudentIds($validatedData);
 
-        return ControllerHelpers::emptyResponse();
+        return ResponseHelpers::emptyResponse();
     }
 
     private function getClassForDate(Request $request, $date)

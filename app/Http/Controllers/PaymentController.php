@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Payment;
 use App\Helpers\ControllerHelpers;
+use App\Helpers\ResponseHelpers;
 
 class PaymentController extends Controller
 {
@@ -73,6 +74,6 @@ class PaymentController extends Controller
 
         $total = $query->sum('amount');
 
-        return ControllerHelpers::jsonResponse(['total' => $total]);
+        return ResponseHelpers::jsonResponse(['total' => $total]);
     }
 }
