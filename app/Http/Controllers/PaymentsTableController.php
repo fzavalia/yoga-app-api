@@ -6,7 +6,6 @@ use App\Student;
 use App\Payment;
 use Illuminate\Http\Request;
 use App\Helpers\DateHelpers;
-use App\Helpers\ControllerHelpers;
 use App\Helpers\ResponseHelpers;
 
 class PaymentsTableController extends Controller
