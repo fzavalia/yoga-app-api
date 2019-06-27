@@ -32,6 +32,7 @@ Route::middleware("auth:api")->group(function () {
     // Payments
 
     Route::get('/payments/total', "PaymentController@total");
+    Route::get('/payments/summary/{date}', "PaymentController@summary");
     RoutingHelpers::makeBREAD("payments", "PaymentController");
 
     // Yoga Classes
@@ -43,8 +44,4 @@ Route::middleware("auth:api")->group(function () {
     Route::get('/assistance_tables/{date}', "AssistanceTableController@show");
     Route::put('/assistance_tables/yoga_classes/{date}', "AssistanceTableController@updateYogaClass");
     Route::put('/assistance_tables/yoga_classes/{date}/students/{id}', "AssistanceTableController@updateStudentAssistance");
-
-    // Payments Table
-
-    Route::get('/payments_table/{date}', "PaymentsTableController");
 });
