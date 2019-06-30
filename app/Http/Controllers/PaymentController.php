@@ -8,6 +8,7 @@ use App\Helpers\ControllerHelpers;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\DateHelpers;
 use App\Student;
+use App\YogaClass;
 
 class PaymentController extends Controller
 {
@@ -112,43 +113,29 @@ class PaymentController extends Controller
             })
             ->sum('amount');
 
-        $studentsWithPaymentsMadeInGivenMonth = Student::with('payments')
-            ->where('user_id', $userId)
-            ->whereHas('payments', function ($query) use ($d1, $d2) {
-                $query
-                    ->where('payed_at', '>=', $d1)
-                    ->where('payed_at', '<=', $d2);
-            })
-            ->select('id')
+        $studentsWithTotalPayedInGivenMonth = Payment::where('user_id', $userId)
+            ->where('payed_at', '>=', $d1)
+            ->where('payed_at', '<=', $d2)
             ->get()
-            ->keyBy('id');
-
-        $studentsWithClassesAssistedInGivenMonth = Student::with('yogaClasses')
-            ->where('user_id', $userId)
-            ->whereHas('yogaClasses', function ($query) use ($d1, $d2) {
-                $query
-                    ->where('date', '>=', $d1)
-                    ->where('date', '<=', $d2);
-            })
-            ->select('id')
-            ->get()
-            ->keyBy('id');
-
-        $studentsWithTotalPayedInGivenMonth = $studentsWithPaymentsMadeInGivenMonth
-            ->map(function ($student) {
-                $payments = $student->payments;
-                $student->total = $payments->sum('amount');
-                unset($student->payments);
-                return $student;
+            ->groupBy('student_id')
+            ->map(function ($payments) {
+                return $payments->sum('amount');
             });
 
-        $studentsWithTotalClassesAssistedInGivenMonth = $studentsWithClassesAssistedInGivenMonth
-            ->map(function ($student) {
-                $yogaClasses = $student->yogaClasses;
-                $student->total = $yogaClasses->count();
-                unset($student->yogaClasses);
-                return $student;
-            });
+        $studentsWithTotalClassesAssistedInGivenMonth = YogaClass::with('students:id')
+            ->where('user_id', $userId)
+            ->where('date', '>=', $d1)
+            ->where('date', '<=', $d2)
+            ->get()
+            ->reduce(function ($acc, $next) {
+                $next->students->each(function ($student) use (&$acc) {
+                    if (!isset($acc[$student->id])) {
+                        $acc[$student->id] = 0;
+                    }
+                    $acc[$student->id] += $acc[$student->id] + 1;
+                });
+                return $acc;
+            }, []);
 
         $studentsWithTotalPayedAndClassesAssistedInMonth = Student::where('user_id', $userId)
             ->select('id', 'name')
@@ -156,11 +143,11 @@ class PaymentController extends Controller
             ->map(function ($student) use ($studentsWithTotalPayedInGivenMonth, $studentsWithTotalClassesAssistedInGivenMonth) {
                 $totalPayed = 0;
                 if (isset($studentsWithTotalPayedInGivenMonth[$student->id])) {
-                    $totalPayed = $studentsWithTotalPayedInGivenMonth[$student->id]->total;
+                    $totalPayed = $studentsWithTotalPayedInGivenMonth[$student->id];
                 }
                 $classesAssisted = 0;
                 if (isset($studentsWithTotalClassesAssistedInGivenMonth[$student->id])) {
-                    $classesAssisted = $studentsWithTotalClassesAssistedInGivenMonth[$student->id]->total;
+                    $classesAssisted = $studentsWithTotalClassesAssistedInGivenMonth[$student->id];
                 }
                 $student->payed = $totalPayed;
                 $student->assisted = $classesAssisted;
