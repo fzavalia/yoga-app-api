@@ -132,7 +132,7 @@ class PaymentController extends Controller
                     if (!isset($acc[$student->id])) {
                         $acc[$student->id] = 0;
                     }
-                    $acc[$student->id] += $acc[$student->id] + 1;
+                    $acc[$student->id] = $acc[$student->id] + 1;
                 });
                 return $acc;
             }, []);
