@@ -1,20 +1,30 @@
 # Getting Started
 
+## Requires
+
+- php
+
+- composer
+
 ## Local Development
 
-Copy Environment Variable
+Install dependencies
+
+`$ composer install`
+
+Copy environment variables
 
 `$ cp example.env .env`
 
-Run Database
+Run database
 
 `$ docker-compose up -d`
 
-Prepare Database
+Prepare database
 
 `$ scripts/migrate_and_seed_local_db.sh`
 
-Run Server
+Run server
 
 `$ php artisan serve`
 
